@@ -136,7 +136,7 @@ plotdisFeature <- function(dat = NULL, grouping = NULL, annotCol = NULL,
         mutate(Ratio=Percent[tolower(type) == "expr"]/
                  Percent[tolower(type) != "expr"]) %>% ungroup %>%
         filter(tolower(type) == "expr")
-
+      
       p <- ggplot(data=ratiosCalc, aes(x=annotCol, y=Ratio)) + 
         scale_x_discrete(annotCol, expand=c(0,0)) 
     } else {
@@ -145,7 +145,7 @@ plotdisFeature <- function(dat = NULL, grouping = NULL, annotCol = NULL,
       ratiosCalc <- plot.frame %>% group_by(grouping, Distance, DistToFeature) %>% 
         mutate(Ratio=last(Percent)/first(Percent)) %>% ungroup %>%
         filter(tolower(type) == "expr")
-
+      
       if(discreteBins) {
         p <- ggplot(data=ratiosCalc, aes(x=Distance, y=Ratio)) + 
           scale_x_discrete(annotCol, expand=c(0,0))                
@@ -163,7 +163,7 @@ plotdisFeature <- function(dat = NULL, grouping = NULL, annotCol = NULL,
     }
     
     p <- p + scale_y_continuous("Ratio Expr/Ctrls", expand=c(0,0)) +
-      geom_hline(y=1)
+      geom_hline(yintercept=1)
   } else {
     if(isBool) {
       p <- ggplot(data=plot.frame, aes(x=annotCol, y=Percent)) + 
@@ -186,7 +186,7 @@ plotdisFeature <- function(dat = NULL, grouping = NULL, annotCol = NULL,
     }
     
     p <- p + scale_y_continuous("Percent of Sites", 
-                                label=percent, expand=c(0,0))
+                                labels=percent, expand=c(0,0))
     
     if(all(dat$type!="")) {
       p <- p + facet_wrap(~type, ncol=1)
